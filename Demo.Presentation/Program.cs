@@ -1,3 +1,9 @@
+using Demo.BusinessLogic.Services;
+using Demo.DataAccess.Data.Contexts;
+using Demo.DataAccess.Moodels;
+using Demo.DataAccess.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 namespace Demo.Presentation
 {
     public class Program
@@ -6,29 +12,45 @@ namespace Demo.Presentation
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            #region Add services to the container.
+
             builder.Services.AddControllersWithViews();
+            // builder.Services.AddScoped<ApplicationDbContext>();
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+            });//better
+
+            builder.Services.AddScoped<DepartmentRepository>();
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+
+
+            #endregion
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
+            #region Configure the HTTP request pipeline.
+
+              if (!app.Environment.IsDevelopment())
+              {
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
-            }
+              }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+              app.UseHttpsRedirection();
+              app.UseStaticFiles();
 
-            app.UseRouting();
+              app.UseRouting();
 
-            app.UseAuthorization();
+              app.UseAuthorization();
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+              app.MapControllerRoute(
+              name: "default",
+              pattern: "{controller=Home}/{action=Index}/{id?}");
+            #endregion
 
             app.Run();
         }
