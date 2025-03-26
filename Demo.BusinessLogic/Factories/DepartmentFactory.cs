@@ -1,5 +1,5 @@
 ﻿using Demo.BusinessLogic.DataTransferOpjects;
-using Demo.DataAccess.Moodels;
+using Demo.DataAccess.Moodels.DepartmentModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,8 +31,7 @@ namespace Demo.BusinessLogic.Factories
             {
                 Id= D.Id,
                 Name= D.Name,
-                CreateOn = DateOnly.FromDateTime(D.CreateOn),
-
+                DateOfCreation = DateOnly.FromDateTime(D.CreateOn),
             };
         }
 
@@ -42,8 +41,8 @@ namespace Demo.BusinessLogic.Factories
             {
                 Code = departmentDto.Code,
                 Description = departmentDto.Description,
-                Name = departmentDto.Nmae,
-                CreateOn = departmentDto.DateOfCreate.ToDateTime(new TimeOnly()),
+                Name = departmentDto.Name,
+                CreateOn = departmentDto.DateOfCreation.ToDateTime(new TimeOnly()),
             };
 
         }
@@ -51,9 +50,9 @@ namespace Demo.BusinessLogic.Factories
         public static Department ToEntity(this UpdatedDepartmentDto departmentDto) => new Department()
         {
             Id = departmentDto.Id,
-            Name = departmentDto.Nmae,
+            Name = departmentDto.Name,
             Code = departmentDto.Code,
-            CreateOn = departmentDto.DateOfCreate.ToDateTime(new TimeOnly()),
+            CreateOn = departmentDto.DateOfCreation.ToDateTime(new TimeOnly()),
             Description = departmentDto.Description,
 
         };

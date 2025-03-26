@@ -16,8 +16,8 @@ namespace Demo.BusinessLogic.DataTransferOpjects
         //    CreateOn = DateOnly.FromDateTime(department.CreateOn);
         //}
         public int Id { get; set; }
-        public int CreateBy { get; set; }
-        public DateOnly CreateOn { get; set; }
+        public int CreatedBy { get; set; }
+        public DateOnly DateOfCreation { get; set; }
         public int LastModifiedBy { get; set; }
         public DateOnly LastModifiedOn { get; set; }
         public bool IsDeleted { get; set; }

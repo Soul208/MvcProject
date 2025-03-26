@@ -1,10 +1,10 @@
 ﻿using Demo.BusinessLogic.DataTransferOpjects;
 
-namespace Demo.BusinessLogic.Services
+namespace Demo.BusinessLogic.Services.DepartmentsServies
 {
     public interface IDepartmentService
     {
-        int AddDepartment(CreateDepartmentDto departmentDbo);
+        int CreateDepartment(CreateDepartmentDto departmentDbo);
         bool DeleteDepartment(int id);
         IEnumerable<DepartmentDbo> GetAllDepartments();
         DepartmentDetialsDto GetDepartmentById(int id);

@@ -1,14 +1,14 @@
 ﻿using Demo.BusinessLogic.DataTransferOpjects;
 using Demo.BusinessLogic.Factories;
 using Demo.DataAccess.Moodels;
-using Demo.DataAccess.Repositories;
+using Demo.DataAccess.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.BusinessLogic.Services
+namespace Demo.BusinessLogic.Services.DepartmentsServies
 {
     public class DepartmentService(IDepartmentRepository _departmentRepository) : IDepartmentService
     {
@@ -24,7 +24,7 @@ namespace Demo.BusinessLogic.Services
             return department is null ? null : department.ToDepartmentDetialsDto();
         }
 
-        public int AddDepartment(CreateDepartmentDto departmentDbo)
+        public int CreateDepartment(CreateDepartmentDto departmentDbo)
         {
             var department = departmentDbo.ToEntity();
             return _departmentRepository.Add(department);

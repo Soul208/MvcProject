@@ -1,7 +1,9 @@
-using Demo.BusinessLogic.Services;
+using Demo.BusinessLogic.Services.DepartmentsServies;
+using Demo.BusinessLogic.Services.Employees;
 using Demo.DataAccess.Data.Contexts;
 using Demo.DataAccess.Moodels;
-using Demo.DataAccess.Repositories;
+using Demo.DataAccess.Repositories.Classes;
+using Demo.DataAccess.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Demo.Presentation
@@ -26,10 +28,18 @@ namespace Demo.Presentation
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
+            #region employee-----------------
 
-            #endregion
 
-            var app = builder.Build();
+            builder.Services.AddControllersWithViews();
+            builder.Services.AddSingleton<IEmployeeService, EmployeeService>();
+
+           #endregion
+
+
+        #endregion
+
+        var app = builder.Build();
 
             #region Configure the HTTP request pipeline.
 
