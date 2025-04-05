@@ -1,4 +1,4 @@
-﻿using Demo.BusinessLogic.DataTransferOpjects;
+﻿using Demo.BusinessLogic.DataTransferOpjects.DepartmentDto;
 
 namespace Demo.BusinessLogic.Services.DepartmentsServies
 {

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Demo.BusinessLogic.DataTransferOpjects
+namespace Demo.BusinessLogic.DataTransferOpjects.DepartmentDto
 {
     public class DepartmentDbo
-     {
+    {
         public int DepId { get; set; }
 
         public string? Name { get; set; }

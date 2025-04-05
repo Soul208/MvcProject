@@ -1,4 +1,4 @@
-﻿using Demo.BusinessLogic.DataTransferOpjects;
+﻿using Demo.BusinessLogic.DataTransferOpjects.DepartmentDto;
 using Demo.BusinessLogic.Factories;
 using Demo.DataAccess.Moodels;
 using Demo.DataAccess.Repositories.Interfaces;

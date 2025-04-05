@@ -34,21 +34,21 @@ namespace Demo.BusinessLogic.Services.Employees
 
         public void UpdateEmployee(Employee employee)
         {
-            var existingEmployee = GetEmployeeById(employee.Id);
-            if (existingEmployee != null)
+            var Employees = GetEmployeeById(employee.Id);
+            if (Employees != null)
             {
-                existingEmployee.Name = employee.Name;
-                existingEmployee.Age = employee.Age;
-                existingEmployee.Address = employee.Address;
-                existingEmployee.IsActive = employee.IsActive;
-                existingEmployee.Salary = employee.Salary;
-                existingEmployee.Email = employee.Email;
-                existingEmployee.PhoneNumber = employee.PhoneNumber;
-                existingEmployee.HiringDate = employee.HiringDate;
-                existingEmployee.Gender = employee.Gender;
-                existingEmployee.EmployeeType = employee.EmployeeType;
-                existingEmployee.CreateBy = employee.CreateBy;
-                existingEmployee.LastModifiedBy = employee.LastModifiedBy;
+                Employees.Name = employee.Name;
+                Employees.Age = employee.Age;
+                Employees.Address = employee.Address;
+                Employees.IsActive = employee.IsActive;
+                Employees.Salary = employee.Salary;
+                Employees.Email = employee.Email;
+                Employees.PhoneNumber = employee.PhoneNumber;
+                Employees.HiringDate = employee.HiringDate;
+                Employees.Gender = employee.Gender;
+                Employees.EmployeeType = employee.EmployeeType;
+                Employees.CreateBy = employee.CreateBy;
+                Employees.LastModifiedBy = employee.LastModifiedBy;
             }
         }
     }

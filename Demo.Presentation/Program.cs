@@ -32,7 +32,7 @@ namespace Demo.Presentation
 
 
             builder.Services.AddControllersWithViews();
-            builder.Services.AddSingleton<IEmployeeService, EmployeeService>();
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
            #endregion
 
