@@ -10,7 +10,7 @@ namespace Demo.BusinessLogic.Services.Employees
 {
     public interface IEmployeeService
     {
-        IEnumerable<EmployeeDto> GetAllEmployees(bool WithTracking);
+        IEnumerable<EmployeeDto> GetAllEmployees(bool WithTracking = false);
         EmployeeDetialDto? GetEmployeeById(int id);
         int CreateEmployee(CreateEmployeeDto employeeDto);
         int UpdateEmployee(UpdateEmployeeDto employeeDto);

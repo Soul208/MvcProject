@@ -17,9 +17,9 @@ namespace Demo.DataAccess.Repositories.Classes
         public IEnumerable<TEntity> GetAll(bool WithTracking = false)
         {
             if (WithTracking)
-                return _dbContext.Set<TEntity>().ToList();
+                return _dbContext.Set<TEntity>().Where(E => E.IsDeleted != true).ToList();
             else
-                return _dbContext.Set<TEntity>().AsNoTracking().ToList();
+                return _dbContext.Set<TEntity>().Where(E => E.IsDeleted != true).AsNoTracking().ToList();
         }
 
         public int Update(TEntity entity)
@@ -40,6 +40,16 @@ namespace Demo.DataAccess.Repositories.Classes
             _dbContext.Set<TEntity>().Add(entity);
             return _dbContext.SaveChanges();
 
+        }
+
+        public IEnumerable<TEntity> GetIEnumerable()
+        {
+            return _dbContext.Set<TEntity>();
+        }
+
+        public IQueryable<TEntity> GetIQueryable()
+        {
+            return _dbContext.Set<TEntity>();
         }
     }
 }

@@ -1,9 +1,11 @@
+using Demo.BusinessLogic.Profiles;
 using Demo.BusinessLogic.Services.DepartmentsServies;
 using Demo.BusinessLogic.Services.Employees;
 using Demo.DataAccess.Data.Contexts;
 using Demo.DataAccess.Moodels;
 using Demo.DataAccess.Repositories.Classes;
 using Demo.DataAccess.Repositories.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Demo.Presentation
@@ -16,7 +18,13 @@ namespace Demo.Presentation
 
             #region Add services to the container.
 
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews(options =>
+            {
+
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+
+            });
+
             // builder.Services.AddScoped<ApplicationDbContext>();
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
@@ -33,6 +41,8 @@ namespace Demo.Presentation
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+            builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles()));
 
            #endregion
 

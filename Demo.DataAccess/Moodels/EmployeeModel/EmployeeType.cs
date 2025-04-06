@@ -10,5 +10,6 @@ namespace Demo.DataAccess.Moodels.EmployeeModel
     {
         FullTime = 1,
         PartTime = 2,
+        Remote =3,
     }
 }

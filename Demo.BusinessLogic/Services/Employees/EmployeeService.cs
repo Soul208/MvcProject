@@ -1,4 +1,7 @@
-﻿using Demo.DataAccess.Moodels.EmployeeModel;
+﻿using AutoMapper;
+using Demo.BusinessLogic.DataTransferOpjects.Employee;
+using Demo.DataAccess.Moodels.EmployeeModel;
+using Demo.DataAccess.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,49 +10,55 @@ using System.Threading.Tasks;
 
 namespace Demo.BusinessLogic.Services.Employees
 {
-    public class EmployeeService : IEmployeeService
+    public class EmployeeService(IEmployeeRepository _employeeRepository , IMapper _mapper) : IEmployeeService
     {
-        private readonly List<Employee> _employees;
-
-        public EmployeeService()
+        public IEnumerable<EmployeeDto> GetAllEmployees(bool WithTracking)
         {
-            _employees = new List<Employee>();
+            var Employees = _employeeRepository.GetAll(WithTracking = false);
+
+            var employeesDto = _mapper.Map<IEnumerable<Employee>,IEnumerable<EmployeeDto>>(Employees);
+            return employeesDto;
+            //var employeesDto = Employees.Select(Emp => new EmployeeDto()
+            //{
+            //    Id = Emp.Id,
+            //    Name = Emp.Name,
+            //    Age = Emp.Age,
+            //    Email = Emp.Email,
+            //    IsActive = Emp.IsActive,
+            //    Salary = Emp.Salary,
+            //    EmployeeType = Emp.EmployeeType.ToString(),
+            //    Gender = Emp.Gender.ToString(),
+
+            //});return employeesDto;
+        }
+        public EmployeeDetialDto? GetEmployeeById(int id)
+        {
+            var employee = _employeeRepository.GetById(id);
+
+            return employee is null ? null : _mapper.Map<Employee,EmployeeDetialDto>(employee);
+        }
+        public int CreateEmployee(CreateEmployeeDto employeeDto)
+        {
+            var employee = _mapper.Map<CreateEmployeeDto , Employee>(employeeDto);
+            return _employeeRepository.Add(employee);
+        }
+        public int UpdateEmployee(UpdateEmployeeDto employeeDto)
+        {
+            return _employeeRepository.Update(_mapper.Map<UpdateEmployeeDto , Employee>(employeeDto));
         }
 
-        public IEnumerable<Employee> GetAllEmployees()
+        public bool DeleteEmployee(int id)
         {
-            return _employees;
-        }
-
-        public Employee GetEmployeeById(int id)
-        {
-            return _employees.FirstOrDefault(e => e.Id == id);
-        }
-
-        public void AddNewEmployee(Employee employee)
-        {
-            employee.Id = _employees.Count > 0 ? _employees.Max(e => e.Id) + 1 : 1;
-            _employees.Add(employee);
-        }
-
-        public void UpdateEmployee(Employee employee)
-        {
-            var Employees = GetEmployeeById(employee.Id);
-            if (Employees != null)
+            var employee = _employeeRepository.GetById(id);
+            if (employee is null) return false;
+            else
             {
-                Employees.Name = employee.Name;
-                Employees.Age = employee.Age;
-                Employees.Address = employee.Address;
-                Employees.IsActive = employee.IsActive;
-                Employees.Salary = employee.Salary;
-                Employees.Email = employee.Email;
-                Employees.PhoneNumber = employee.PhoneNumber;
-                Employees.HiringDate = employee.HiringDate;
-                Employees.Gender = employee.Gender;
-                Employees.EmployeeType = employee.EmployeeType;
-                Employees.CreateBy = employee.CreateBy;
-                Employees.LastModifiedBy = employee.LastModifiedBy;
+                employee.IsDeleted = true;
+               return _employeeRepository.Update(employee) > 0 ? true : false;
             }
         }
+
+
+
     }
 }
