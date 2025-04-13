@@ -37,5 +37,8 @@ namespace Demo.BusinessLogic.DataTransferOpjects.Employee
         {
             get; set;
         }
+
+        public int? DepartmentId { get; set; }
+
     }
 }

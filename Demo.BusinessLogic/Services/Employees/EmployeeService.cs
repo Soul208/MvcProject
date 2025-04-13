@@ -10,14 +10,22 @@ using System.Threading.Tasks;
 
 namespace Demo.BusinessLogic.Services.Employees
 {
-    public class EmployeeService(IEmployeeRepository _employeeRepository , IMapper _mapper) : IEmployeeService
+    public class EmployeeService(IunitOfWork _unitOfWork, IMapper _mapper) : IEmployeeService
     {
-        public IEnumerable<EmployeeDto> GetAllEmployees(bool WithTracking)
+        public IEnumerable<EmployeeDto> GetAllEmployees(string? EmployeeSearchName)
         {
-            var Employees = _employeeRepository.GetAll(WithTracking = false);
+            //var Employees = _employeeRepository.GetAll(E => E.Name.ToLower().Contains(EmployeeSearchName.ToLower()));
+            //var employeesDto = _mapper.Map<IEnumerable<Employee>,IEnumerable<EmployeeDto>>(Employees);
+            //return employeesDto;
+            IEnumerable<Employee> employee;
+            if (string.IsNullOrWhiteSpace(EmployeeSearchName))
+                employee = _unitOfWork.EmployeeRepository.GetAll();
+            else
+                employee = _unitOfWork.EmployeeRepository.GetAll(E => E.Name.ToLower().Contains(EmployeeSearchName.ToLower()));
+                var employeesDto = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeDto>>(employee);
+                return employeesDto;
 
-            var employeesDto = _mapper.Map<IEnumerable<Employee>,IEnumerable<EmployeeDto>>(Employees);
-            return employeesDto;
+            #region manual
             //var employeesDto = Employees.Select(Emp => new EmployeeDto()
             //{
             //    Id = Emp.Id,
@@ -30,31 +38,37 @@ namespace Demo.BusinessLogic.Services.Employees
             //    Gender = Emp.Gender.ToString(),
 
             //});return employeesDto;
+            #endregion
+
+
         }
         public EmployeeDetialDto? GetEmployeeById(int id)
         {
-            var employee = _employeeRepository.GetById(id);
+            var employee = _unitOfWork.EmployeeRepository.GetById(id);
 
             return employee is null ? null : _mapper.Map<Employee,EmployeeDetialDto>(employee);
         }
         public int CreateEmployee(CreateEmployeeDto employeeDto)
         {
             var employee = _mapper.Map<CreateEmployeeDto , Employee>(employeeDto);
-            return _employeeRepository.Add(employee);
+             _unitOfWork.EmployeeRepository.Add(employee);
+            return _unitOfWork.SaveChanges();
         }
         public int UpdateEmployee(UpdateEmployeeDto employeeDto)
         {
-            return _employeeRepository.Update(_mapper.Map<UpdateEmployeeDto , Employee>(employeeDto));
+             _unitOfWork.EmployeeRepository.Update(_mapper.Map<UpdateEmployeeDto , Employee>(employeeDto));
+            return _unitOfWork.SaveChanges();
         }
 
         public bool DeleteEmployee(int id)
         {
-            var employee = _employeeRepository.GetById(id);
+            var employee = _unitOfWork.EmployeeRepository.GetById(id);
             if (employee is null) return false;
             else
             {
                 employee.IsDeleted = true;
-               return _employeeRepository.Update(employee) > 0 ? true : false;
+                _unitOfWork.EmployeeRepository.Update(employee);
+                return _unitOfWork.SaveChanges() > 0 ? true : false; ;
             }
         }
 

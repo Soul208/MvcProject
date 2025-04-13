@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,23 +23,20 @@ namespace Demo.DataAccess.Repositories.Classes
                 return _dbContext.Set<TEntity>().Where(E => E.IsDeleted != true).AsNoTracking().ToList();
         }
 
-        public int Update(TEntity entity)
+        public void Update(TEntity entity)
         {
 
             _dbContext.Set<TEntity>().Update(entity);
-            return _dbContext.SaveChanges();
         }
 
-        public int Remove(TEntity entity)
+        public void Remove(TEntity entity)
         {
             _dbContext.Set<TEntity>().Remove(entity);
-            return _dbContext.SaveChanges();
         }
 
-        public int Add(TEntity entity)
+        public void Add(TEntity entity)
         {
             _dbContext.Set<TEntity>().Add(entity);
-            return _dbContext.SaveChanges();
 
         }
 
@@ -50,6 +48,14 @@ namespace Demo.DataAccess.Repositories.Classes
         public IQueryable<TEntity> GetIQueryable()
         {
             return _dbContext.Set<TEntity>();
+        }
+
+        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> Predicate)
+        {
+            return _dbContext.Set<TEntity>()
+                .Where(Predicate)
+                .ToList();
+
         }
     }
 }

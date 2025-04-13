@@ -4,6 +4,7 @@ using Demo.BusinessLogic.Services.DepartmentsServies;
 using Demo.Presentation.ViewModels.DepartmentViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Operations;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
 namespace Demo.Presentation.Controllers
 {
@@ -14,6 +15,8 @@ namespace Demo.Presentation.Controllers
         
         public IActionResult Index()
         {
+            ViewData["Message"] = "Hello From View Data";
+            ViewBag.Message = "Hello from view Bag";
             var Departments = _departmentService.GetAllDepartments();
             return View(Departments);
         }
@@ -23,19 +26,29 @@ namespace Demo.Presentation.Controllers
         public IActionResult Create() => View();
         [HttpPost]
        // [ValidateAntiForgeryToken]
-        public IActionResult Create(CreateDepartmentDto departmentDto)
+        public IActionResult Create(DepartmentViewModle departmentViewModle)
         {
             if(ModelState.IsValid)
             {
                 try
                 {
-                  int result =  _departmentService.CreateDepartment(departmentDto);
-                    if (result == 0)
-                        return RedirectToAction("Index");
-                    else
+                    var departmentDto = new CreateDepartmentDto()
                     {
-                        ModelState.AddModelError(string.Empty, "Department can not be create");
-                    }
+                        Name = departmentViewModle.Name,
+                        Code = departmentViewModle.Code,
+                        DateOfCreation = departmentViewModle.DateOfCreation,
+                        Description = departmentViewModle.Description,
+                    };
+                  int result =  _departmentService.CreateDepartment(departmentDto);
+                    string Message;
+                    if (result > 0)
+                        Message = $"Department {departmentViewModle.Name} Is Created Succesfully";
+                    else
+                        Message = $"Department {departmentViewModle.Name} Can not Be Created";
+
+                    TempData["Message"] = Message;
+                    return RedirectToAction(nameof(Index));
+
                  
                 }
                 catch (Exception ex)
@@ -51,7 +64,7 @@ namespace Demo.Presentation.Controllers
                     
                 }
             }
-                return View(departmentDto);
+                return View(departmentViewModle);
         }
         #endregion
 
@@ -73,7 +86,7 @@ namespace Demo.Presentation.Controllers
          if (!id.HasValue) return BadRequest();
             var depatrment = _departmentService.GetDepartmentById(id.Value);
             if(depatrment == null) return NotFound();
-            var departmentViewModel = new DepartmentEditViewModle()
+            var departmentViewModel = new DepartmentViewModle()
             {
                 Code = depatrment.Code,
                 Name = depatrment.Name,
@@ -87,7 +100,7 @@ namespace Demo.Presentation.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit([FromRoute]int? id , DepartmentEditViewModle viewModle)
+        public IActionResult Edit([FromRoute]int? id , DepartmentViewModle viewModle)
         { 
             if(ModelState.IsValid)
             {
