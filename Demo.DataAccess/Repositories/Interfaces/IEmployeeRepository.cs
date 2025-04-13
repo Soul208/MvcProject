@@ -14,5 +14,6 @@ namespace Demo.DataAccess.Repositories.Interfaces
         Employee? GetById(int id);
         void Remove(Employee Employee);
         void Update(Employee Employee);
+
     }
 }
