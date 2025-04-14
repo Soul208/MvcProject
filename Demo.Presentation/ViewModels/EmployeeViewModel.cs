@@ -1,15 +1,10 @@
 ﻿using Demo.DataAccess.Moodels.EmployeeModel;
 using Demo.DataAccess.Moodels.Shared.Enums;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Demo.BusinessLogic.DataTransferOpjects.Employee
+namespace Demo.Presentation.ViewModels
 {
-    public class CreateEmployeeDto
+    public class EmployeeViewModel
     {
         [Required]
         [MaxLength(50, ErrorMessage = "Max length should be 50 character")]
@@ -36,7 +31,7 @@ namespace Demo.BusinessLogic.DataTransferOpjects.Employee
         {
             get; set;
         }
-
+        [Display(Name = "Department")]
         public int? DepartmentId { get; set; }
     }
 }

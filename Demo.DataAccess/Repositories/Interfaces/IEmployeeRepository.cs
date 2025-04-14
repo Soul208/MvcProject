@@ -9,10 +9,11 @@ namespace Demo.DataAccess.Repositories.Interfaces
 {
     public interface IEmployeeRepository :IGenericRepository<Employee>
     {
-        int Add(Employee Employee);
+        void Add(Employee Employee);
         IEnumerable<Employee> GetAll(bool WithTracking = false);
         Employee? GetById(int id);
-        int Remove(Employee Employee);
-        int Update(Employee Employee);
+        void Remove(Employee Employee);
+        void Update(Employee Employee);
+
     }
 }

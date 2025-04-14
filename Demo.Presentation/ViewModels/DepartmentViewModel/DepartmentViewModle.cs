@@ -1,6 +1,6 @@
 ﻿namespace Demo.Presentation.ViewModels.DepartmentViewModel
 {
-    public class DepartmentEditViewModle
+    public class DepartmentViewModle
     {
 
         public string Name { get; set; } = string.Empty;
