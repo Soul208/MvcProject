@@ -54,7 +54,7 @@ namespace Demo.Presentation.Controllers
                         Image = employeeViewModel.Image,
                     };
                     int result = _employeeService.CreateEmployee(employeeDto);
-                    if (result == 0)
+                    if (result > 0)
                         return RedirectToAction("Index");
                     else
                     {

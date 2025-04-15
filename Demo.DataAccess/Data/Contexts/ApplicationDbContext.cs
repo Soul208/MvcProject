@@ -2,7 +2,7 @@
 using Demo.DataAccess.Moodels.IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.Identity.Client;
+using System.Data.Common;
 using System.Reflection;
 
 namespace Demo.DataAccess.Data.Contexts
