@@ -1,4 +1,5 @@
 using Demo.BusinessLogic.Profiles;
+using Demo.BusinessLogic.Services.AttachmentService;
 using Demo.BusinessLogic.Services.DepartmentsServies;
 using Demo.BusinessLogic.Services.Employees;
 using Demo.DataAccess.Data.Contexts;
@@ -45,6 +46,7 @@ namespace Demo.Presentation
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
             builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles()));
             builder.Services.AddScoped<IunitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IAttachmentService , AttachmentService>();
 
            #endregion
 
