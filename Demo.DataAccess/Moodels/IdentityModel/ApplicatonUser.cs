@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Demo.DataAccess.Moodels.IdentityModel
 {
-    internal class ApplicatonUser : IdentityUser
+    public class ApplicatonUser : IdentityUser
     {
         public string FirstName { get; set; } = null!;
         public string? LastName { get; set; }
