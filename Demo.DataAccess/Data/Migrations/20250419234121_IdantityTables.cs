@@ -11,6 +11,75 @@ namespace Demo.DataAccess.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Employees_Departments_DepartmentId",
+                table: "Employees");
+
+            migrationBuilder.AlterColumn<decimal>(
+                name: "Salary",
+                table: "Employees",
+                type: "decimal(18,2)",
+                nullable: false,
+                oldClrType: typeof(decimal),
+                oldType: "decimal(10,2)");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Name",
+                table: "Employees",
+                type: "nvarchar(max)",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "varchar(50)");
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "LastModifiedOn",
+                table: "Employees",
+                type: "datetime2",
+                nullable: true,
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldComputedColumnSql: "GETDATE()");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Gender",
+                table: "Employees",
+                type: "int",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "EmployeeType",
+                table: "Employees",
+                type: "int",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)");
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreateOn",
+                table: "Employees",
+                type: "datetime2",
+                nullable: false,
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldDefaultValueSql: "GETDATE()");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Address",
+                table: "Employees",
+                type: "nvarchar(max)",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "varchar(50)",
+                oldNullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "ImageName",
+                table: "Employees",
+                type: "nvarchar(max)",
+                nullable: true);
+
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
                 table: "Departments",
@@ -25,18 +94,7 @@ namespace Demo.DataAccess.Data.Migrations
                 type: "datetime2",
                 nullable: true,
                 oldClrType: typeof(DateTime),
-                oldType: "datetime2",
-                oldNullable: true,
-                oldComputedColumnSql: "GETDATE()");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "CreateOn",
-                table: "Departments",
-                type: "datetime2",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "datetime2",
-                oldDefaultValueSql: "GETDATE()");
+                oldType: "datetime2");
 
             migrationBuilder.AlterColumn<string>(
                 name: "Code",
@@ -95,40 +153,6 @@ namespace Demo.DataAccess.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Employees",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Age = table.Column<int>(type: "int", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HiringDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Gender = table.Column<int>(type: "int", nullable: false),
-                    EmployeeType = table.Column<int>(type: "int", nullable: false),
-                    DepartmentId = table.Column<int>(type: "int", nullable: true),
-                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateBy = table.Column<int>(type: "int", nullable: false),
-                    CreateOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedBy = table.Column<int>(type: "int", nullable: false),
-                    LastModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Employees", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Employees_Departments_DepartmentId",
-                        column: x => x.DepartmentId,
-                        principalTable: "Departments",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -276,15 +300,21 @@ namespace Demo.DataAccess.Data.Migrations
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Employees_DepartmentId",
+            migrationBuilder.AddForeignKey(
+                name: "FK_Employees_Departments_DepartmentId",
                 table: "Employees",
-                column: "DepartmentId");
+                column: "DepartmentId",
+                principalTable: "Departments",
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Employees_Departments_DepartmentId",
+                table: "Employees");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -301,13 +331,64 @@ namespace Demo.DataAccess.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Employees");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "ImageName",
+                table: "Employees");
+
+            migrationBuilder.AlterColumn<decimal>(
+                name: "Salary",
+                table: "Employees",
+                type: "decimal(10,2)",
+                nullable: false,
+                oldClrType: typeof(decimal),
+                oldType: "decimal(18,2)");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Name",
+                table: "Employees",
+                type: "varchar(50)",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Gender",
+                table: "Employees",
+                type: "nvarchar(max)",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "int");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "EmployeeType",
+                table: "Employees",
+                type: "nvarchar(max)",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "int");
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreateOn",
+                table: "Employees",
+                type: "datetime2",
+                nullable: false,
+                defaultValueSql: "GETDATE()",
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Address",
+                table: "Employees",
+                type: "varchar(50)",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)",
+                oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
@@ -318,13 +399,14 @@ namespace Demo.DataAccess.Data.Migrations
                 oldType: "nvarchar(max)");
 
             migrationBuilder.AlterColumn<DateTime>(
-                name: "CreateOn",
+                name: "LastModifiedOn",
                 table: "Departments",
                 type: "datetime2",
                 nullable: false,
-                defaultValueSql: "GETDATE()",
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                 oldClrType: typeof(DateTime),
-                oldType: "datetime2");
+                oldType: "datetime2",
+                oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "Code",
@@ -346,13 +428,21 @@ namespace Demo.DataAccess.Data.Migrations
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "LastModifiedOn",
-                table: "Departments",
+                table: "Employees",
                 type: "datetime2",
-                nullable: true,
+                nullable: false,
                 computedColumnSql: "GETDATE()",
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
                 oldNullable: true);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Employees_Departments_DepartmentId",
+                table: "Employees",
+                column: "DepartmentId",
+                principalTable: "Departments",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.SetNull);
         }
     }
 }
