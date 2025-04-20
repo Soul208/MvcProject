@@ -111,11 +111,8 @@ namespace Demo.DataAccess.Data.Migrations
                     b.Property<int>("LastModifiedBy")
                         .HasColumnType("int");
 
-<<<<<<< HEAD
                     b.Property<DateTime?>("LastModifiedOn")
-=======
-                    b.Property<DateTime>("LastModifiedOn")
->>>>>>> 60bbecd37a2852f45482ab8198784b40aac60716
+
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
