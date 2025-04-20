@@ -14,7 +14,7 @@ namespace Demo.DataAccess.Data.Contexts
         //    optionsBuilder.UseSqlServer("ConnectionString");
         //}
         public DbSet<Department> Departments { get; set; }
-        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Employee> Employees { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
