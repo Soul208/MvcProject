@@ -9,16 +9,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Demo.Presentation.Controllers
 {
-    public class EmployeesController(IEmployeeService _employeeService , IWebHostEnvironment _environment , ILogger<EmployeesController> logger) : Controller
+    public class EmployeesController(
+        IEmployeeService _employeeService,
+        IWebHostEnvironment _environment,
+        ILogger<EmployeesController> logger
+    ) : Controller
     {
         public IActionResult Index(string? EmployeeSearchName)
         {
             var Employee = _employeeService.GetAllEmployees(EmployeeSearchName);
             return View(Employee);
         }
-
-
-
 
         #region create
 
@@ -28,12 +29,9 @@ namespace Demo.Presentation.Controllers
             return View();
         }
 
-
-
         [HttpPost]
         public IActionResult Create(EmployeeViewModel employeeViewModel)
         {
-
             if (ModelState.IsValid)
             {
                 try
@@ -54,13 +52,12 @@ namespace Demo.Presentation.Controllers
                         Image = employeeViewModel.Image,
                     };
                     int result = _employeeService.CreateEmployee(employeeDto);
-                    if (result == 0)
+                    if (result > 0)
                         return RedirectToAction("Index");
                     else
                     {
                         ModelState.AddModelError(string.Empty, "Employee can not be create");
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -72,7 +69,6 @@ namespace Demo.Presentation.Controllers
                     {
                         logger.LogError(ex.Message);
                     }
-
                 }
             }
             return View(employeeViewModel);
@@ -83,18 +79,21 @@ namespace Demo.Presentation.Controllers
         [HttpGet]
         public IActionResult Details(int? id)
         {
-            if (!id.HasValue) return BadRequest();
+            if (!id.HasValue)
+                return BadRequest();
             var employee = _employeeService.GetEmployeeById(id.Value);
-            return employee is null ? NotFound() : View(employee);  
+            return employee is null ? NotFound() : View(employee);
         }
         #endregion
 
         #region Edit
         public IActionResult Edit(int? id)
         {
-            if(!id.HasValue) return BadRequest();
+            if (!id.HasValue)
+                return BadRequest();
             var employee = _employeeService.GetEmployeeById(id.Value);
-            if (employee is null) return NotFound();
+            if (employee is null)
+                return NotFound();
 
             var employeeViewModel = new EmployeeViewModel()
             {
@@ -109,16 +108,17 @@ namespace Demo.Presentation.Controllers
                 Gender = Enum.Parse<Gender>(employee.Gender),
                 EmployeeType = Enum.Parse<EmployeeType>(employee.EmployeeType),
                 DepartmentId = employee.DepartmentId,
-
             };
             return View(employeeViewModel);
         }
 
         [HttpPost]
-        public IActionResult Edit([FromRoute]int? id,EmployeeViewModel employeeViewModel)
+        public IActionResult Edit([FromRoute] int? id, EmployeeViewModel employeeViewModel)
         {
-            if (!id.HasValue) return BadRequest();
-            if(!ModelState.IsValid) return View(employeeViewModel);
+            if (!id.HasValue)
+                return BadRequest();
+            if (!ModelState.IsValid)
+                return View(employeeViewModel);
             try
             {
                 var employeeDto = new UpdateEmployeeDto()
@@ -135,13 +135,11 @@ namespace Demo.Presentation.Controllers
                     PhoneNumber = employeeViewModel.PhoneNumber,
                     Salary = employeeViewModel.Salary,
                     DepartmentId = employeeViewModel.DepartmentId,
-
                 };
                 var Result = _employeeService.UpdateEmployee(employeeDto);
-                if(Result > 0 )
+                if (Result > 0)
                 {
                     return RedirectToAction(nameof(Index));
-
                 }
                 else
                 {
@@ -151,7 +149,6 @@ namespace Demo.Presentation.Controllers
             }
             catch (Exception ex)
             {
-
                 if (_environment.IsDevelopment())
                 {
                     ModelState.AddModelError(string.Empty, ex.Message);
@@ -162,7 +159,7 @@ namespace Demo.Presentation.Controllers
                     logger.LogError(ex.Message);
                     return View("ErrorView", ex);
                 }
-;
+                ;
             }
         }
         #endregion
@@ -170,10 +167,12 @@ namespace Demo.Presentation.Controllers
         #region delete
         [HttpPost]
         public IActionResult Delete(int id)
-        { 
-          if (id == 0) return BadRequest();
+        {
+            if (id == 0)
+                return BadRequest();
 
-            if (id == 0) return BadRequest();
+            if (id == 0)
+                return BadRequest();
             try
             {
                 bool Deleted = _employeeService.DeleteEmployee(id);
@@ -187,22 +186,19 @@ namespace Demo.Presentation.Controllers
             }
             catch (Exception ex)
             {
-
                 if (_environment.IsDevelopment())
                 {
                     ModelState.AddModelError(string.Empty, ex.Message);
                     return RedirectToAction(nameof(Index));
-
                 }
                 else
                 {
                     logger.LogError(ex.Message);
                     return View("ErrorView", ex);
-                };
+                }
+                ;
             }
-
         }
         #endregion
-
     }
 }
