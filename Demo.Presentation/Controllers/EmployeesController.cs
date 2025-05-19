@@ -21,6 +21,12 @@ namespace Demo.Presentation.Controllers
             return View(Employee);
         }
 
+        public IActionResult Search(string? EmployeeSearchName)
+        {
+            var Employee = _employeeService.GetAllEmployees(EmployeeSearchName);
+            return PartialView("EmployeeTablePartialView", Employee);
+        }
+
         #region create
 
         [HttpGet]
