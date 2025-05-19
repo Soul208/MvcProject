@@ -1,0 +1,35 @@
+﻿@using Demo.Presentation.ViewModels.User
+@model UserDetailsDto
+@{
+	ViewData["Title"] = "Delete";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="my-5 text-center text-danger">
+	Are You Sure You Want To Delete @string.Concat(Model.FName, " ", Model.LName)?
+</h1>
+
+<div class="container">
+	<div class="row justify-content-center">
+		<div class="col-md-10 col-lg-8">
+			<div class="border rounded shadow-sm p-4">
+				<form method="post" asp-controller="User" asp-action="Delete">
+
+					<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+					<partial name="PartialView/DetailAndDeleteView" />
+
+					<div class="d-flex justify-content-between mt-4">
+						<button type="submit" class="btn btn-danger px-4">Delete</button>
+						<a asp-action="Index" class="btn btn-outline-dark px-4">Back To List</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
